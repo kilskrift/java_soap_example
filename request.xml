@@ -1,0 +1,60 @@
+// should look like:
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+	xmlns:tem="http://tempuri.org/"
+	xmlns:dat="http://schemas.datacontract.org/2004/07/DataObjects.Admin.Service">
+	<soapenv:Header />
+	<soapenv:Body>
+		<tem:GetOrders>
+			<!--Optional: -->
+			<tem:request>
+				<dat:Authentication>
+					<dat:Password>sverigetest</dat:Password>
+					<dat:Username>sverigetest</dat:Username>
+				</dat:Authentication>
+				<dat:OrdersToRetrieve>
+					<dat:GetOrderInformation>
+						<dat:ClientId>79021</dat:ClientId>
+						<dat:OrderType>Invoice</dat:OrderType>
+						<dat:SveaOrderId>478232</dat:SveaOrderId>
+					</dat:GetOrderInformation>
+				</dat:OrdersToRetrieve>
+			</tem:request>
+		</tem:GetOrders>
+	</soapenv:Body>
+</soapenv:Envelope>
+
+
+
+Request SOAP Message:
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+	xmlns:dat="http://schemas.datacontract.org/2004/07/DataObjects.Admin.Service"
+	xmlns:tem="http://tempuri.org/">
+	<SOAP-ENV:Header />
+	<SOAP-ENV:Body>
+		<tem:GetOrders>
+			<tem:request>
+				<dat:Authentication>
+					<dat:Password>sverigetest</dat:Password>
+					<dat:Username>sverigetest</dat:Username>
+				</dat:Authentication>
+				<dat:OrdersToRetrieve>
+					<dat:GetOrderInformation>
+						<dat:ClientId>79021</dat:ClientId>
+						<dat:OrderType>Invoice</dat:OrderType>
+						<dat:SveaOrderId>478232</dat:SveaOrderId>
+					</dat:GetOrderInformation>
+				</dat:OrdersToRetrieve>
+			</tem:request>
+		</tem:GetOrders>
+	</SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
+
+Response SOAP Message:
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+	<s:Body>
+		<s:Fault>
+			<faultcode xmlns:a="http://schemas.microsoft.com/ws/2005/05/addressing/none">a:ActionNotSupported</faultcode>
+			<faultstring xml:lang="sv-SE">The message with Action 'https://partnerweb.sveaekonomi.se/WebPayAdminService_test/AdminService.svc/backward/GetOrders' cannot be processed at the receiver, due to a ContractFilter mismatch at the EndpointDispatcher. This may be because of either a contract mismatch (mismatched Actions between sender and receiver) or a binding/security mismatch between the sender and the receiver.  Check that sender and receiver have the same contract and the same binding (including security requirements, e.g. Message, Transport, None).</faultstring>
+		</s:Fault>
+	</s:Body>
+</s:Envelope>
