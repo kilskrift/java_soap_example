@@ -20,6 +20,10 @@ public class SOAPClientSAAJ {
         soapConnection.close();
     }
 
+    /**
+     * @return
+     * @throws Exception
+     */
     private static SOAPMessage createSOAPRequest() throws Exception {
         MessageFactory messageFactory = MessageFactory.newInstance();
         SOAPMessage soapMessage = messageFactory.createMessage();
@@ -46,9 +50,7 @@ public class SOAPClientSAAJ {
 		//      </tem:GetOrders>
 		//   </soapenv:Body>
 		//</soapenv:Envelope>    	    
-	            
-        String serverURI = "https://partnerweb.sveaekonomi.se/WebPayAdminService_test/AdminService.svc/backward/";
-    	
+	                	
         // SOAP Envelope
         SOAPEnvelope envelope = soapPart.getEnvelope();
 	    envelope.addNamespaceDeclaration("dat", "http://schemas.datacontract.org/2004/07/DataObjects.Admin.Service");
@@ -72,9 +74,12 @@ public class SOAPClientSAAJ {
 						    	soapBodyElem7.addTextNode("Invoice");
 						    SOAPElement soapBodyElem8 = soapBodyElem5.addChildElement("SveaOrderId", "dat");
 						    	soapBodyElem8.addTextNode("478232");
-		    
+
+						    	
+        String soapActionPrefix = "http://tempuri.org/IAdminService/";
+						    	
         MimeHeaders headers = soapMessage.getMimeHeaders();
-        headers.addHeader("SOAPAction", serverURI + "GetOrders");
+        headers.addHeader("SOAPAction", soapActionPrefix + "GetOrders");
 					   
         soapMessage.saveChanges();
 
