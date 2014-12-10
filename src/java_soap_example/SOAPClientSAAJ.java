@@ -10,9 +10,9 @@ public class SOAPClientSAAJ {
         SOAPConnection soapConnection = soapConnectionFactory.createConnection();
 
         // Send SOAP Message to SOAP Server
-        String url = "http://ws.cdyne.com/emailverify/Emailvernotestemail.asmx";
-        SOAPMessage soapResponse = soapConnection.call(createSOAPRequest(), url);
-
+        String url = "https://partnerweb.sveaekonomi.se/WebPayAdminService_test/AdminService.svc/backward";
+    	SOAPMessage soapResponse = soapConnection.call(createSOAPRequest(), url);
+        
         // print SOAP Response
         System.out.print("Response SOAP Message:");
         soapResponse.writeTo(System.out);
@@ -20,41 +20,67 @@ public class SOAPClientSAAJ {
         soapConnection.close();
     }
 
+    /**
+     * @return
+     * @throws Exception
+     */
     private static SOAPMessage createSOAPRequest() throws Exception {
         MessageFactory messageFactory = MessageFactory.newInstance();
         SOAPMessage soapMessage = messageFactory.createMessage();
         SOAPPart soapPart = soapMessage.getSOAPPart();
-
-        String serverURI = "http://ws.cdyne.com/";
-
+    
+		//<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/" xmlns:dat="http://schemas.datacontract.org/2004/07/DataObjects.Admin.Service">
+		//   <soapenv:Header/>
+		//   <soapenv:Body>
+		//      <tem:GetOrders>
+		//         <!--Optional:-->
+		//         <tem:request>
+		//            <dat:Authentication>
+		//               <dat:Password>sverigetest</dat:Password>
+		//               <dat:Username>sverigetest</dat:Username>
+		//            </dat:Authentication>
+		//            <dat:OrdersToRetrieve>
+		//               <dat:GetOrderInformation>
+		//                  <dat:ClientId>79021</dat:ClientId>
+		//                  <dat:OrderType>Invoice</dat:OrderType>
+		//                  <dat:SveaOrderId>478232</dat:SveaOrderId>
+		//               </dat:GetOrderInformation>
+		//            </dat:OrdersToRetrieve>
+		//         </tem:request>
+		//      </tem:GetOrders>
+		//   </soapenv:Body>
+		//</soapenv:Envelope>    	    
+	                	
         // SOAP Envelope
         SOAPEnvelope envelope = soapPart.getEnvelope();
-        envelope.addNamespaceDeclaration("example", serverURI);
+	    envelope.addNamespaceDeclaration("dat", "http://schemas.datacontract.org/2004/07/DataObjects.Admin.Service");
+	    envelope.addNamespaceDeclaration("tem", "http://tempuri.org/");	    
+        
+	    // SOAP Body
+	    SOAPBody start = envelope.getBody();
+	    SOAPElement soapBody = start.addChildElement("GetOrders", "tem");
+		    SOAPElement soapBodyElem = soapBody.addChildElement("request", "tem");
+		    	SOAPElement soapBodyElem1 = soapBodyElem.addChildElement("Authentication", "dat");
+		    		SOAPElement soapBodyElem2 = soapBodyElem1.addChildElement("Password", "dat");
+		    			soapBodyElem2.addTextNode("sverigetest");
+		    		SOAPElement soapBodyElem3 = soapBodyElem1.addChildElement("Username", "dat");
+		    			soapBodyElem3.addTextNode("sverigetest");
+	    		
+		    		SOAPElement soapBodyElem4 = soapBodyElem.addChildElement("OrdersToRetrieve", "dat");
+		    			SOAPElement soapBodyElem5 = soapBodyElem4.addChildElement("GetOrderInformation", "dat");
+		    				SOAPElement soapBodyElem6 = soapBodyElem5.addChildElement("ClientId", "dat");
+						    	soapBodyElem6.addTextNode("79021");
+						    SOAPElement soapBodyElem7 = soapBodyElem5.addChildElement("OrderType", "dat");
+						    	soapBodyElem7.addTextNode("Invoice");
+						    SOAPElement soapBodyElem8 = soapBodyElem5.addChildElement("SveaOrderId", "dat");
+						    	soapBodyElem8.addTextNode("478232");
 
-        /*
-        Constructed SOAP Request Message:
-        <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:example="http://ws.cdyne.com/">
-            <SOAP-ENV:Header/>
-            <SOAP-ENV:Body>
-                <example:VerifyEmail>
-                    <example:email>mutantninja@gmail.com</example:email>
-                    <example:LicenseKey>123</example:LicenseKey>
-                </example:VerifyEmail>
-            </SOAP-ENV:Body>
-        </SOAP-ENV:Envelope>
-         */
-
-        // SOAP Body
-        SOAPBody soapBody = envelope.getBody();
-        SOAPElement soapBodyElem = soapBody.addChildElement("VerifyEmail", "example");
-        SOAPElement soapBodyElem1 = soapBodyElem.addChildElement("email", "example");
-        soapBodyElem1.addTextNode("mutantninja@gmail.com");
-        SOAPElement soapBodyElem2 = soapBodyElem.addChildElement("LicenseKey", "example");
-        soapBodyElem2.addTextNode("123");
-
+						    	
+        String soapActionPrefix = "http://tempuri.org/IAdminService/";
+						    	
         MimeHeaders headers = soapMessage.getMimeHeaders();
-        headers.addHeader("SOAPAction", serverURI  + "VerifyEmail");
-
+        headers.addHeader("SOAPAction", soapActionPrefix + "GetOrders");
+					   
         soapMessage.saveChanges();
 
         /* Print the request message */
