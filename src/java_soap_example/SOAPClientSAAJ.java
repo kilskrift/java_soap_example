@@ -2,6 +2,8 @@ package java_soap_example;
 
 import javax.xml.soap.*;
 
+import org.w3c.dom.NodeList;
+
 public class SOAPClientSAAJ {
 
     public static void main(String args[]) throws Exception {
@@ -14,13 +16,30 @@ public class SOAPClientSAAJ {
     	SOAPMessage soapResponse = soapConnection.call(createSOAPRequest(), url);
         
         // print SOAP Response
-        System.out.print("Response SOAP Message:");
+//        System.out.print("Response SOAP Message:");
         soapResponse.writeTo(System.out);
-
+        
         soapConnection.close();
+        
+        GetOrdersResponse response = parseResponse(soapResponse, "GetOrdersResponse");
+        System.out.println(response.isOrderAccepted());
+        System.out.println(response.getResultCode());
+        System.out.println(response.getErrorMessage());
+        
     }
 
-    /**
+    private static GetOrdersResponse parseResponse(SOAPMessage soapMessage, String responseHeader) throws SOAPException {
+
+        SOAPPart sp = soapMessage.getSOAPPart();
+        SOAPEnvelope se = sp.getEnvelope();
+        SOAPBody sb = se.getBody();
+        SOAPHeader sh = se.getHeader();    	
+        
+    	NodeList nodeList = soapMessage.getSOAPPart().getEnvelope().getBody().getElementsByTagName("*");
+    	return new GetOrdersResponse( nodeList );
+	}
+
+	/**
      * @return
      * @throws Exception
      */
@@ -84,9 +103,9 @@ public class SOAPClientSAAJ {
         soapMessage.saveChanges();
 
         /* Print the request message */
-        System.out.print("Request SOAP Message:");
-        soapMessage.writeTo(System.out);
-        System.out.println();
+//        System.out.print("Request SOAP Message:");
+//        soapMessage.writeTo(System.out);
+//        System.out.println();
 
         return soapMessage;
     }
