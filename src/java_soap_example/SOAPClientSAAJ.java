@@ -16,8 +16,8 @@ public class SOAPClientSAAJ {
     	SOAPMessage soapResponse = soapConnection.call(createSOAPRequest(), url);
         
         // print SOAP Response
-//        System.out.print("Response SOAP Message:");
-        soapResponse.writeTo(System.out);
+		//System.out.print("Response SOAP Message:");
+		//soapResponse.writeTo(System.out);
         
         soapConnection.close();
         
@@ -25,16 +25,17 @@ public class SOAPClientSAAJ {
         System.out.println(response.isOrderAccepted());
         System.out.println(response.getResultCode());
         System.out.println(response.getErrorMessage());
-        
+
+        System.out.println(response.getChangedDate());
+        System.out.println(response.getClientId());
+        System.out.println(response.getClientOrderId());
+        System.out.println(response.getCreatedDate());
+        System.out.println(response.getCreditReportStatusAccepted());
+        System.out.println(response.getCreditReportStatusCreationDate());
     }
 
-    private static GetOrdersResponse parseResponse(SOAPMessage soapMessage, String responseHeader) throws SOAPException {
 
-        SOAPPart sp = soapMessage.getSOAPPart();
-        SOAPEnvelope se = sp.getEnvelope();
-        SOAPBody sb = se.getBody();
-        SOAPHeader sh = se.getHeader();    	
-        
+    private static GetOrdersResponse parseResponse(SOAPMessage soapMessage, String responseHeader) throws SOAPException {  	        
     	NodeList nodeList = soapMessage.getSOAPPart().getEnvelope().getBody().getElementsByTagName("*");
     	return new GetOrdersResponse( nodeList );
 	}
@@ -103,9 +104,9 @@ public class SOAPClientSAAJ {
         soapMessage.saveChanges();
 
         /* Print the request message */
-//        System.out.print("Request SOAP Message:");
-//        soapMessage.writeTo(System.out);
-//        System.out.println();
+		//System.out.print("Request SOAP Message:");
+		//soapMessage.writeTo(System.out);
+		//System.out.println();
 
         return soapMessage;
     }
