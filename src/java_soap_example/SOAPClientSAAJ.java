@@ -16,8 +16,8 @@ public class SOAPClientSAAJ {
     	SOAPMessage soapResponse = soapConnection.call(createSOAPRequest(), url);
         
         // print SOAP Response
-		//System.out.print("Response SOAP Message:");
-		//soapResponse.writeTo(System.out);
+		System.out.print("Response SOAP Message:");
+		soapResponse.writeTo(System.out);
         
         soapConnection.close();
         
@@ -63,7 +63,7 @@ public class SOAPClientSAAJ {
 		//               <dat:GetOrderInformation>
 		//                  <dat:ClientId>79021</dat:ClientId>
 		//                  <dat:OrderType>Invoice</dat:OrderType>
-		//                  <dat:SveaOrderId>478232</dat:SveaOrderId>
+		//                  <dat:SveaOrderId>348629</dat:SveaOrderId>
 		//               </dat:GetOrderInformation>
 		//            </dat:OrdersToRetrieve>
 		//         </tem:request>
@@ -93,7 +93,7 @@ public class SOAPClientSAAJ {
 						    SOAPElement soapBodyElem7 = soapBodyElem5.addChildElement("OrderType", "dat");
 						    	soapBodyElem7.addTextNode("Invoice");
 						    SOAPElement soapBodyElem8 = soapBodyElem5.addChildElement("SveaOrderId", "dat");
-						    	soapBodyElem8.addTextNode("478232");
+						    	soapBodyElem8.addTextNode("348629");
 
 						    	
         String soapActionPrefix = "http://tempuri.org/IAdminService/";
@@ -104,9 +104,9 @@ public class SOAPClientSAAJ {
         soapMessage.saveChanges();
 
         /* Print the request message */
-		//System.out.print("Request SOAP Message:");
-		//soapMessage.writeTo(System.out);
-		//System.out.println();
+		System.out.print("Request SOAP Message:");
+		soapMessage.writeTo(System.out);
+		System.out.println();
 
         return soapMessage;
     }
